@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Why Lucky Why</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f1f1f1;
+        animation: fadeIn 0.8s ease;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    .chat-container {
+        max-width: 600px;
+        margin: 50px auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        animation: centerChatBox 0.8s ease;
+    }
+
+    @keyframes centerChatBox {
+        from {
+            opacity: 0;
+            transform: translateY(-50px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .chat-box {
+        min-height: 200px;
+        max-height: 400px;
+        overflow-y: scroll;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-bottom: 10px;
+    }
+
+    input[type="text"] {
+        width: calc(100% - 70px);
+        padding: 8px;
+        margin-right: 10px;
+        border-radius: 4px;
+        border: 1px solid #ccc;
+    }
+
+    button {
+        padding: 8px 15px;
+        border: none;
+        border-radius: 4px;
+        background-color: #95c6fa;
+        color: #fff;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #95c6fa;
+    }
+</style>
+</head>
+<body>
+<h1 style="text-align: center;">Why Lucky Why</h1>
+<div class="chat-container" id="chat-container">
+    <button onclick="clearChat()" style="margin-bottom: 10px;">Clear Chat</button>
+    <div class="chat-box" id="chat-box"></div>
+    <input type="text" id="user-input" placeholder="Type your message...">
+    <button onclick="sendMessage()">Send</button>
+</div>
+<footer style="text-align: center; margin-top: 20px;">
+    <a href="gmailto:luckyburman2003@gmail.com">Send a E-mail </a>
+
+</footer>
+<script>
+    let byeCount = 0;
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+
+    function sendMessage() {
+        const message = userInput.value.trim();
+        if (message === '') return;
+        
+        chatBox.innerHTML += `<p><strong>You :</strong> ${message}</p>`;
+        userInput.value = '';
+        userInput.focus();
+
+        if (message.toLowerCase() === 'hi') {
+            typeResponse("Hi, I'm Lucky");
+        } else if (message.toLowerCase() === 'bye') {
+            byeCount++;
+            if (byeCount === 3) {
+                typeResponse("Goodbye !!");
+                userInput.disabled = true;
+                document.querySelector('button').disabled = true;
+                return;
+            }
+        } else {
+            typeResponse("Why?");
+        }
+        
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function typeResponse(response) {
+        setTimeout(function() {
+            let typingEffect = '....';
+            chatBox.innerHTML += `<p><strong>Lucky :</strong></p>`;
+            let i = 0;
+            const interval = setInterval(function() {
+                chatBox.lastChild.innerHTML = `<strong>Lucky :</strong> ${response.substring(0, i)}${typingEffect}`;
+                i++;
+                if (i > response.length) {
+                    clearInterval(interval);
+                    chatBox.lastChild.innerHTML = `<strong>Lucky :</strong> ${response}`;
+                }
+            }, 50); 
+            chatBox.scrollTop = chatBox.scrollHeight; 
+        }, 500); 
+    }
+
+    function clearChat() {
+        chatBox.innerHTML = '';
+        byeCount = 0;
+        userInput.disabled = false;
+        document.querySelector('button').disabled = false;
+    }
+
+    userInput.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            sendMessage();
+        }
+    })
+    
+
+;
+</script>
+</body>
+</html>
